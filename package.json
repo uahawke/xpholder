@@ -1,0 +1,28 @@
+{
+  "name": "xpholder",
+  "version": "3.0.0",
+  "description": "A Discord bot that tracks character XP and level progression for play-by-post / Adventure League style roleplay servers.",
+  "main": "main.js",
+  "license": "MIT",
+  "author": "JT Expo",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node main.js",
+    "deploy-commands": "node deploy-commands.js",
+    "migrate": "node tooling/dataMigration/sqliteToPostgres.js"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^1.14.1",
+    "@discordjs/rest": "^2.6.3",
+    "discord-api-types": "^0.38.53",
+    "discord.js": "^14.27.0",
+    "dotenv": "^17.4.2",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "sqlite3": "^6.0.1"
+  }
+}

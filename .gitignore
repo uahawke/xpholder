@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Secrets
+.env
+.env.local
+
+# Legacy per-guild SQLite databases (pre-Postgres storage)
+guilds/
+tooling/dataMigration/data/
+tooling/dataMigration/legacyData/
+
+# OS cruft
+.DS_Store
+
+# Logs
+npm-debug.log*
