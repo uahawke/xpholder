@@ -83,7 +83,7 @@ client.on('interactionCreate', async interaction => {
     // LOADING GUILD SERVICE
     const gService = new guildService(guildId, database);
     await gService.init();
-    if (!await gService.isRegistered() && command.data.name != "register") {
+    if (!gService.registered && command.data.name != "register") {
         // Try Catch on the reply, because this is a restful call, and errors can be found
         try {
             await interaction.reply({
@@ -98,21 +98,21 @@ client.on('interactionCreate', async interaction => {
     EXECUTING COMMAND
     -----------------
     */
-    try {
-        logCommand(interaction);
-    } catch (error) {
-        console.log(error);
-    }
+    // logCommand()/logError() are intentionally fire-and-forget - logging
+    // shouldn't block or fail the actual command. But without .catch()
+    // here, a failure inside them (e.g. LOGING_CHANNEL_ID / ERROR_CHANNEL_ID
+    // in config.json pointing at a channel this bot isn't in) becomes an
+    // unhandled promise rejection - which crashes the whole Node process by
+    // default. That looks like "the application did not respond" from
+    // Discord's side, followed by Railway silently restarting the bot.
+    logCommand(interaction).catch(error => console.log(error));
+
     try {
         let is_public = !interaction.options.getBoolean("public");
         await interaction.deferReply({ ephemeral: is_public });
         await command.execute(gService, interaction);
     } catch (error) {
-        try {
-            logError(interaction, error);
-        } catch (error) {
-            console.log(error);
-        }
+        logError(interaction, error).catch(err => console.log(err));
         console.log(error);
     }
 });
